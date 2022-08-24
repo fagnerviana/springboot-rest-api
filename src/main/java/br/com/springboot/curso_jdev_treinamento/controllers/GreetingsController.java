@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +47,7 @@ public class GreetingsController {
     	
     	Usuario usuario = new Usuario();
     	usuario.setNome(nome);
+    	//usuario.setIdade(idade);
     	
     	usuarioRepository.save(usuario); //grava no banco de dados
     	
@@ -54,11 +57,21 @@ public class GreetingsController {
     @GetMapping(value ="listatodos") //nosso primeiro metodos de API
     @ResponseBody //Retorna os dados para ao corpo da resposta
     public ResponseEntity<List<Usuario>> listaUsuario(){
-    	
     	List<Usuario> usuarios = usuarioRepository.findAll();
-		
-    	return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
+		return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
+    	   	
+    }
+    
+    //Salvar o objeto Ususario no BD
+    @PostMapping(value="salvar")//mapear URL
+    @ResponseBody //Descrição da Resposta
+    public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){//recebe os dados para salvar
     	
+    	Usuario user = usuarioRepository.save(usuario);
+    	    	
+    	return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
     	
     }
+  
+    
 }
