@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.springboot.curso_jdev_treinamento.model.Usuario;
 import br.com.springboot.curso_jdev_treinamento.repository.UsuarioRepository;
 
@@ -25,6 +25,7 @@ import br.com.springboot.curso_jdev_treinamento.repository.UsuarioRepository;
  *
  * A sample greetings controller to return greeting text
  */
+
 @RestController
 public class GreetingsController {
     //IC , CD ou CDI - Injeção de dependencia 
@@ -66,12 +67,12 @@ public class GreetingsController {
     }
     
     //Salvar o objeto Ususario no BD
-    @PostMapping(value="salvar")//mapear URL
+    
+    @PostMapping(value="salvar",consumes=MediaType.APPLICATION_JSON_VALUE)//mapear URL
     @ResponseBody //Descrição da Resposta
     public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){//recebe os dados para salvar
     	
     	Usuario user = usuarioRepository.save(usuario);
-    	    	
     	return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
     	
     }
@@ -108,7 +109,7 @@ public class GreetingsController {
     
     @GetMapping(value="buscarusernome") //mapeia a urdl
     @ResponseBody //Descrição da Resposta
-    public ResponseEntity<List<Usuario>> buscarusernome(@RequestParam(name="name") String name){//Recebe os dados para consultar
+    public ResponseEntity<List<Usuario>> buscarUserNome(@RequestParam(name="name") String name){//Recebe os dados para consultar
     	
     	List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase());
 		return new ResponseEntity<List<Usuario>>(usuario,HttpStatus.OK);
